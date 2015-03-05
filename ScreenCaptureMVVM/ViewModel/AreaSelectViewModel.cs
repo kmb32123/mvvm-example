@@ -10,15 +10,22 @@ namespace ScreenCaptureMVVM.ViewModel
 {
     public class AreaSelectViewModel : StateViewModel
     {
-        public static ObservableCollection<Type> Capturers
+        // I realy am sorry for the length of this line...
+        private static readonly ReadOnlyObservableCollection<Type> _capturers
+            = new ReadOnlyObservableCollection<Type>(
+              new ObservableCollection<Type>(
+                  typeof(ScreenCapturer).Assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(ScreenCapturer)))));
+
+        public static ReadOnlyObservableCollection<Type> Capturers
         {
             get
             {
-                return new ObservableCollection<Type>(typeof(ScreenCapturer).Assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(ScreenCapturer))));
+                return _capturers;
             }
         }
 
         private Type _selectedArea;
+
         public Type SelectedArea
         {
             get { return _selectedArea; }

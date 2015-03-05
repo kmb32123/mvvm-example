@@ -68,18 +68,11 @@ This code goes through lengths to ensure changes need only be made in one place 
 Rather then creating a static collection of cultures I support, I generate one by looking at what resource files exist.
 
 ```
-public ObservableCollection<CultureInfo> AvailableCultures
-{
-  get
-  {
-    if (_availableCultures == null)
-    {
-      var rm = new ResourceManager(typeof(strings));
-      _availableCultures = new ObservableCollection<CultureInfo>(CultureInfo.GetCultures(CultureTypes.AllCultures).Where(cultureInfo => rm.GetResourceSet(cultureInfo, true, false) != null));
-    }
-    return _availableCultures;
-  }
-}
+private static readonly ReadOnlyObservableCollection<CultureInfo> _availableCultures
+    = new ReadOnlyObservableCollection<CultureInfo>(
+      new ObservableCollection<CultureInfo>(
+          CultureInfo.GetCultures(CultureTypes.AllCultures)
+            .Where(cultureInfo =>  new ResourceManager(typeof(strings)).GetResourceSet(cultureInfo, true, false) != null)));
 ```
 
 ####Screen Capturers
@@ -87,11 +80,8 @@ public ObservableCollection<CultureInfo> AvailableCultures
 This uses reflection to find all subclasses of the type `ScreenCapturer` and offer them as choices to the user. While this is  not always good practice, it does allow the coder to create a new `ScreenCapturer` child class and have it available without making any additional changes.
 
 ```
-public static ObservableCollection<Type> Capturers
-{
-  get
-  {
-    return new ObservableCollection<Type>(typeof(ScreenCapturer).Assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(ScreenCapturer))));
-  }
-}
+private static readonly ReadOnlyObservableCollection<Type> _capturers
+    = new ReadOnlyObservableCollection<Type>(
+      new ObservableCollection<Type>(
+          typeof(ScreenCapturer).Assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(ScreenCapturer)))));
 ```

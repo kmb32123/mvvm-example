@@ -43,17 +43,19 @@ namespace ScreenCaptureMVVM.ViewModel
             Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture = culture;
             LocalizedStrings.Resources.UpdateStrings();
         }
-        
-        private ObservableCollection<CultureInfo> _availableCultures;
-        public ObservableCollection<CultureInfo> AvailableCultures
+
+
+        // I realy am sorry for the length of this line...
+        private static readonly ReadOnlyObservableCollection<CultureInfo> _availableCultures
+            = new ReadOnlyObservableCollection<CultureInfo>(
+              new ObservableCollection<CultureInfo>(
+                  CultureInfo.GetCultures(CultureTypes.AllCultures)
+                    .Where(cultureInfo =>  new ResourceManager(typeof(strings)).GetResourceSet(cultureInfo, true, false) != null)));
+
+        public static ReadOnlyObservableCollection<CultureInfo> AvailableCultures
         {
             get
             {
-                if (_availableCultures == null)
-                {
-                    var rm = new ResourceManager(typeof(strings));
-                    _availableCultures = new ObservableCollection<CultureInfo>(CultureInfo.GetCultures(CultureTypes.AllCultures).Where(cultureInfo => rm.GetResourceSet(cultureInfo, true, false) != null));
-                }
                 return _availableCultures;
             }
         }
