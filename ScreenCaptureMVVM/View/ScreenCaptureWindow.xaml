@@ -1,0 +1,39 @@
+<Window x:Class="ScreenCaptureMVVM.View.ScreenCaptureWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="Screen Capturer"
+
+        ResizeMode="NoResize"
+        SizeToContent="WidthAndHeight" Background="#FFFDF6E3" WindowStyle="ToolWindow" xmlns:viewModel="clr-namespace:ScreenCaptureMVVM.ViewModel" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:globalization="clr-namespace:System.Globalization;assembly=mscorlib"
+        d:DesignHeight="604">
+
+    <Window.DataContext>
+        <viewModel:WindowViewModel/>
+    </Window.DataContext>
+    <StackPanel>
+        <DockPanel>
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_File">
+                    <MenuItem Header="_Exit"/>
+                </MenuItem>
+                <MenuItem Header="_Tools">
+                    <MenuItem Header="_Options"/>
+                    <MenuItem x:Name="LanguageMenuItem" Header="Change the _Language" ItemsSource="{Binding AvailableCultures}">
+                        <MenuItem.ItemContainerStyle>
+                            <Style TargetType="MenuItem">
+                                <Setter Property="Header" Value="{Binding Path=(globalization:CultureInfo.DisplayName)}"/>
+                                <Setter Property="Command" Value="{Binding DataContext.ChangeLanguageCommand, ElementName=LanguageMenuItem}"/>
+                                <Setter Property="CommandParameter" Value="{Binding}"/>
+                            </Style>
+                        </MenuItem.ItemContainerStyle>
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Header="_Help">
+                    <MenuItem Header="View _Help"/>
+                    <MenuItem Header="_About"/>
+                </MenuItem>
+            </Menu>
+        </DockPanel>
+        <ContentControl Content="{Binding CurrentStateContainer}" />
+    </StackPanel>
+</Window>

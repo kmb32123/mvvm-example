@@ -1,0 +1,8 @@
+﻿<Application x:Class="ScreenCaptureMVVM.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:viewModel="clr-namespace:ScreenCaptureMVVM.ViewModel" StartupUri="View\ScreenCaptureWindow.xaml">
+    <Application.Resources>
+        <viewModel:LocalizedStrings x:Key="LocalizedStrings"/>
+    </Application.Resources>
+</Application>
